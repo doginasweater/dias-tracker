@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  dias.tracker.api:
+    image: ${DOCKER_REGISTRY-}diastrackerapi
+    build:
+      context: .
+      dockerfile: dias.tracker.api/Dockerfile

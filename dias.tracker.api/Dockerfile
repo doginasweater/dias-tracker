@@ -1,16 +1,19 @@
-FROM mcr.microsoft.com/dotnet/core-nightly/sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
+EXPOSE 80
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+WORKDIR /src
+COPY ["dias.tracker.api/dias.tracker.api.csproj", "dias.tracker.api/"]
+RUN dotnet restore "dias.tracker.api/dias.tracker.api.csproj"
+COPY . .
+WORKDIR "/src/dias.tracker.api"
+RUN dotnet build "dias.tracker.api.csproj" -c Release -o /app
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+RUN dotnet publish "dias.tracker.api.csproj" -c Release -o /app
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/core-nightly/aspnet
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "dias.tracker.api.dll"]
