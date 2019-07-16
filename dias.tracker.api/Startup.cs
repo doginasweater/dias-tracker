@@ -1,5 +1,7 @@
+using dias.tracker.api.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,19 +16,31 @@ namespace dias.tracker.api {
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
+      // services.AddEntityFrameworkNpgsql()
+      //   .AddDbContext<TrackerContext>(options =>
+      //     options
+      //       .UseLazyLoadingProxies()
+      //       .UseNpgsql(Configuration.GetConnectionString("tracker")))
+      //   .BuildServiceProvider();
+
+      services.AddDbContext<TrackerContext>(options =>
+        options
+          .UseLazyLoadingProxies()
+          .UseSqlite(Configuration.GetConnectionString("tracker")));
+
       services.AddControllers();
 
       services.AddAuthorization();
 
-      services
-        .AddAuthentication("Bearer")
-        .AddJwtBearer("Bearer", options => {
-          options.Authority = "http://localhost:5000";
-          options.RequireHttpsMetadata = false;
-          options.Audience = "api1";
-        })
-        .AddDiscord(options => {
-        });
+      // services
+      //   .AddAuthentication("Bearer")
+      //   .AddJwtBearer("Bearer", options => {
+      //     options.Authority = "http://localhost:5000";
+      //     options.RequireHttpsMetadata = false;
+      //     options.Audience = "api1";
+      //   })
+      //   .AddDiscord(options => {
+      //   });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
