@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres:11.4
+    volumes:
+      - db_data:/var/lib/postgres
+    restart: always
+  dias.tracker.api:
+    image: ${DOCKER_REGISTRY-}diastrackerapi
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - "5001:80"
+    build:
+      context: .
+      dockerfile: dias.tracker.api/Dockerfile
+  dias.tracker.auth:
+    image: ${DOCKER_REGISTRY-}diastrackerauth
+    restart: always
+    build:
+      context: .
+      dockerfile: dias.tracker.auth/Dockerfile
+  dias.tracker.discord:
+    image: ${DOCKER_REGISTRY-}diastrackerdiscord
+    restart: always
+    depends_on:
+      - dias.tracker.api
+    build:
+      context: .
+      dockerfile: dias.tracker.discord/Dockerfile
+  dias.tracker.web:
+    image: ${DOCKER_REGISTRY-}diastrackerweb
+    depends_on:
+      - dias.tracker.api
+    restart: always
+    ports:
+      - "5002:80"
+    build:
+      context: .
+      dockerfile: dias.tracker.web/Dockerfile
+volumes:
+  db_data:

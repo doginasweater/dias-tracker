@@ -5,6 +5,7 @@ using DSharpPlus;
 namespace dias.tracker.discord {
   public class Program {
     private static DiscordClient discord;
+
     public static async Task Main(string[] args) {
       discord = new DiscordClient(new DiscordConfiguration {
         Token = "",
