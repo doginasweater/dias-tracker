@@ -1,27 +1,53 @@
 ﻿using System;
 using System.Threading.Tasks;
+using dias.tracker.discord.Commands;
+using dias.tracker.discord.Events;
 using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.Interactivity;
 
 namespace dias.tracker.discord {
   public class Program {
+    private static CommandsNextModule commands;
     private static DiscordClient discord;
+    private static InteractivityModule interactivity;
 
     public static async Task Main(string[] args) {
+      var token = Environment.GetEnvironmentVariable("BOT_TOKEN");
+
+      if (string.IsNullOrEmpty(token)) {
+        throw new ArgumentException("The bot needs a token to run!");
+      }
+
       discord = new DiscordClient(new DiscordConfiguration {
-        Token = "NTk4MjI2MzU0OTY1NzA4ODAy.XTDI-w.eXBBkaYTqO06KQHTcv10cHZmV64",
+        Token = token,
         TokenType = TokenType.Bot,
+        UseInternalLogHandler = true,
+        LogLevel = LogLevel.Debug,
+        AutoReconnect = true,
       });
 
-      discord.MessageCreated += async e => {
-        Console.WriteLine($"Received message: {e.Message.Content}");
-        if (e.Message.Content.ToLower().StartsWith("!ping")) {
-          await e.Message.RespondAsync("pong!");
-        }
-      };
+      commands = discord.UseCommandsNext(new CommandsNextConfiguration {
+        StringPrefix = "!!",
+        EnableDefaultHelp = true,
+        EnableDms = true,
+        EnableMentionPrefix = true,
+      });
+
+      commands.RegisterCommands<Basic>();
+      commands.RegisterCommands<Poll>();
+
+      interactivity = discord.UseInteractivity(new InteractivityConfiguration());
+
+      // events
+      discord.Ready += LogEvents.ClientReady;
+      discord.GuildAvailable += LogEvents.GuildAvailable;
+      discord.ClientErrored += LogEvents.ClientError;
+
+      commands.CommandExecuted += LogEvents.CommandExecuted;
+      commands.CommandErrored += LogEvents.CommandErrored;
 
       await discord.ConnectAsync();
-
-      Console.WriteLine("Connected");
 
       await Task.Delay(-1);
     }
