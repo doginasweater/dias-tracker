@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace dias.tracker.api {
   public class Startup {
@@ -16,21 +17,24 @@ namespace dias.tracker.api {
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
-      // services.AddEntityFrameworkNpgsql()
-      //   .AddDbContext<TrackerContext>(options =>
-      //     options
-      //       .UseLazyLoadingProxies()
-      //       .UseNpgsql(Configuration.GetConnectionString("tracker")))
-      //   .BuildServiceProvider();
+      if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower() == "production") {
+        services.AddEntityFrameworkNpgsql()
+          .AddDbContext<TrackerContext>(options =>
+            options
+              .UseLazyLoadingProxies()
+              .UseNpgsql(Configuration.GetConnectionString("tracker")));
+      } else {
+        services.AddDbContext<TrackerContext>(options =>
+          options
+            .UseLazyLoadingProxies()
+            .UseSqlite(Configuration.GetConnectionString("tracker")));
+      }
 
-      services.AddDbContext<TrackerContext>(options =>
-        options
-          .UseLazyLoadingProxies()
-          .UseSqlite(Configuration.GetConnectionString("tracker")));
+      services.AddCors();
 
       services.AddControllers();
 
-      services.AddAuthorization();
+      // services.AddAuthorization();
 
       // services
       //   .AddAuthentication("Bearer")
@@ -51,6 +55,11 @@ namespace dias.tracker.api {
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
+
+      app.UseCors(builder =>
+        builder.WithOrigins(
+
+        ));
 
       app.UseHttpsRedirection();
 

@@ -29,7 +29,7 @@ namespace dias.tracker.web
                 options.CheckConsentNeeded = context => true;
             });
 
-
+            services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

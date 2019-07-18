@@ -8,8 +8,8 @@ namespace dias.tracker.discord {
 
     public static async Task Main(string[] args) {
       discord = new DiscordClient(new DiscordConfiguration {
-        Token = "",
-        TokenType = TokenType.Bot
+        Token = "NTk4MjI2MzU0OTY1NzA4ODAy.XTDI-w.eXBBkaYTqO06KQHTcv10cHZmV64",
+        TokenType = TokenType.Bot,
       });
 
       discord.MessageCreated += async e => {
