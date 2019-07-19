@@ -10,11 +10,13 @@ using System.Net.Http;
 namespace dias.tracker.web.Controllers {
   public class HomeController : Controller {
     private static readonly HttpClient _client = new HttpClient();
-    private static readonly string _remoteUrl = "https://dias-tracker-api.azurewebsites.net";
-    public IActionResult Index() {
-      var data = _client.GetStringAsync($"{_remoteUrl}/api/Values");
+    private static readonly string _remoteUrl = "http://localhost:5002";
+    public async Task<IActionResult> Index() {
+      var data = await _client.GetStringAsync($"{_remoteUrl}/api/Values");
 
-      return Json(data);
+      ViewData["response"] = data;
+
+      return View();
     }
 
     public IActionResult Privacy() {
