@@ -4,6 +4,8 @@ using dias.tracker.discord.Commands;
 using dias.tracker.discord.Events;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 
 namespace dias.tracker.discord {
@@ -25,6 +27,7 @@ namespace dias.tracker.discord {
         UseInternalLogHandler = true,
         LogLevel = LogLevel.Debug,
         AutoReconnect = true,
+
       });
 
       commands = discord.UseCommandsNext(new CommandsNextConfiguration {
@@ -41,6 +44,7 @@ namespace dias.tracker.discord {
 
       // events
       discord.Ready += LogEvents.ClientReady;
+      discord.Ready += SetGame;
       discord.GuildAvailable += LogEvents.GuildAvailable;
       discord.ClientErrored += LogEvents.ClientError;
 
@@ -50,6 +54,10 @@ namespace dias.tracker.discord {
       await discord.ConnectAsync();
 
       await Task.Delay(-1);
+    }
+
+    private static async Task SetGame(ReadyEventArgs e) {
+      await discord.UpdateStatusAsync(new DiscordGame($"Cat Herder {DateTime.Now.Year}"));
     }
   }
 }

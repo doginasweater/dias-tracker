@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29021.104
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dias.tracker.api", "dias.tracker.api\dias.tracker.api.csproj", "{C8F70A62-6C6A-4F59-ACE3-3B003E5D3B53}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dias.tracker.auth", "dias.tracker.auth\dias.tracker.auth.csproj", "{0B462C70-624E-4AC5-8400-042106B1C191}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dias.tracker.web", "dias.tracker.web\dias.tracker.web.csproj", "{4FF210A7-F422-4B7C-B371-B15B4441D7C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dias.tracker.discord", "dias.tracker.discord\dias.tracker.discord.csproj", "{7DB09051-A2FA-4275-B585-E5A8E6D791C0}"

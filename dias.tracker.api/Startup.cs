@@ -17,17 +17,17 @@ namespace dias.tracker.api {
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
-      if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower() == "production") {
+      if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower() == "development") {
+        services.AddDbContext<TrackerContext>(options =>
+          options
+            .UseLazyLoadingProxies()
+            .UseSqlite(Configuration.GetConnectionString("tracker")));
+      } else {
         services.AddEntityFrameworkNpgsql()
           .AddDbContext<TrackerContext>(options =>
             options
               .UseLazyLoadingProxies()
               .UseNpgsql(Configuration.GetConnectionString("tracker")));
-      } else {
-        services.AddDbContext<TrackerContext>(options =>
-          options
-            .UseLazyLoadingProxies()
-            .UseSqlite(Configuration.GetConnectionString("tracker")));
       }
 
       services.AddWebEncoders(); // bug in app insights requires this

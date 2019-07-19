@@ -4,17 +4,15 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
-WORKDIR /src
-COPY dias.tracker.web/dias.tracker.web.csproj dias.tracker.web/
-RUN dotnet restore "dias.tracker.web/dias.tracker.web.csproj"
-COPY . .
-WORKDIR "/src/dias.tracker.web"
-RUN dotnet build "dias.tracker.web.csproj" -c Release -o /app
+WORKDIR /app
+COPY dias.tracker.web.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish "dias.tracker.web.csproj" -c Release -o /app
+COPY . .
+
+RUN dotnet publish -c Release -o out
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=build /app/out .
 ENTRYPOINT ["dotnet", "dias.tracker.web.dll"]
