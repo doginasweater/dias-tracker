@@ -1,9 +1,6 @@
 import path from "path";
 import webpack from "webpack";
 
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import HtmlWebpackPlugin from "html-webpack-plugin";
-
 const config: webpack.Configuration = {
   entry: {
     app: "./src/index.tsx",
@@ -14,7 +11,7 @@ const config: webpack.Configuration = {
   output: {
     path: path.resolve("./wwwroot/dist"),
     filename: "[name].js",
-    publicPath: "/",
+    publicPath: "/dist/",
   },
   module: {
     rules: [
@@ -53,15 +50,6 @@ const config: webpack.Configuration = {
       },
     ],
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: "./src/layout-template.cshtml",
-      title: "Tiro Finale Raid Tracker",
-      filename: "../../Views/Shared/_Layout.cshtml",
-      hash: true,
-    }),
-  ],
 };
 
 export default config;

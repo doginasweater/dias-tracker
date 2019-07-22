@@ -5,11 +5,14 @@ import webpackMerge from "webpack-merge";
 
 import common from "./webpack.config.common";
 
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+
 const config: webpack.Configuration = webpackMerge(common, {
   mode: "production",
   output: {
     path: path.resolve("./wwwroot/dist"),
-    filename: "[name].[hash].js",
+    filename: "[name].js",
   },
   module: {
     rules: [
@@ -44,11 +47,16 @@ const config: webpack.Configuration = webpackMerge(common, {
     runtimeChunk: "single",
   },
   plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: "./src/scripts.html",
+      filename: "scripts.html",
+    }),
     new webpack.NamedModulesPlugin(),
     new webpack.HashedModuleIdsPlugin(),
     new MiniCssExtractPlugin({
-      filename: "[name].[hash].css",
-      chunkFilename: "[id].[hash].css",
+      filename: "[name].css",
+      chunkFilename: "[id].css",
     }),
   ],
 });

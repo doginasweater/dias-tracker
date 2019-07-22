@@ -6,13 +6,13 @@ import common from "./webpack.config.common";
 const config: webpack.Configuration = webpackMerge(common, {
   mode: "development",
   devtool: "inline-source-map",
-  devServer: {
-    contentBase: "./dist",
-    hot: true,
-    historyApiFallback: true,
-  },
+  // devServer: {
+  //   contentBase: "./wwwroot/dist",
+  //   hot: true,
+  //   historyApiFallback: true,
+  // },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
   ],
 });
 

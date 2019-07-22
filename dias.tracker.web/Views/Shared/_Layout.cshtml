@@ -11,6 +11,12 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-
-<script type="text/javascript" src="/runtime.3b7ecb2c3c72dd53f621.js?3b7ecb2c3c72dd53f621"></script><script type="text/javascript" src="/vendor.3b7ecb2c3c72dd53f621.js?3b7ecb2c3c72dd53f621"></script><script type="text/javascript" src="/app.3b7ecb2c3c72dd53f621.js?3b7ecb2c3c72dd53f621"></script></body>
+  @RenderBody()
+  <environment names="Development">
+    <script src="~/dist/app.js"></script>
+  </environment>
+  <environment names="Production">
+    <partial name="~/dist/scripts.js" />
+  </environment>
+</body>
 </html>
