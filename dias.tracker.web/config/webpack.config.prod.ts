@@ -8,7 +8,7 @@ import common from "./webpack.config.common";
 const config: webpack.Configuration = webpackMerge(common, {
   mode: "production",
   output: {
-    path: path.resolve("./dist"),
+    path: path.resolve("./wwwroot/dist"),
     filename: "[name].[hash].js",
   },
   module: {
