@@ -66,11 +66,11 @@ namespace dias.tracker.discord.Commands {
         return;
       }
 
-      var numPools = _random.Next(1, pools.Count);
+      var numPools = _random.Next(0, pools.Count);
 
       await ctx.RespondAsync("I give you a hamburger.");
 
-      for (var i = 0; i < numPools; i++) {
+      for (var i = 0; i <= numPools; i++) {
         var delay = _random.Next(2, 7) * 1000;
 
         if (i > 0 && i % 2 == 0) {
