@@ -7,7 +7,7 @@ services:
       - db_data:/var/lib/postgres
     restart: always
   dias.tracker.api:
-    image: ${DOCKER_REGISTRY-}diastrackerapi
+    # image: ${DOCKER_REGISTRY-}diastrackerapi
     depends_on:
       - db
     restart: always
@@ -16,22 +16,16 @@ services:
     build:
       context: .
       dockerfile: dias.tracker.api/Dockerfile
-  dias.tracker.auth:
-    image: ${DOCKER_REGISTRY-}diastrackerauth
-    restart: always
-    build:
-      context: .
-      dockerfile: dias.tracker.auth/Dockerfile
-  dias.tracker.discord:
-    image: ${DOCKER_REGISTRY-}diastrackerdiscord
-    restart: always
-    depends_on:
-      - dias.tracker.api
-    build:
-      context: .
-      dockerfile: dias.tracker.discord/Dockerfile
+  # dias.tracker.discord:
+  #   image: ${DOCKER_REGISTRY-}diastrackerdiscord
+  #   restart: always
+  #   depends_on:
+  #     - dias.tracker.api
+  #   build:
+  #     context: .
+  #     dockerfile: dias.tracker.discord/Dockerfile
   dias.tracker.web:
-    image: ${DOCKER_REGISTRY-}diastrackerweb
+    # image: ${DOCKER_REGISTRY-}diastrackerweb
     depends_on:
       - dias.tracker.api
     restart: always
