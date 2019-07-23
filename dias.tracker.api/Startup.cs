@@ -30,6 +30,13 @@ namespace dias.tracker.api {
               .UseNpgsql(Configuration.GetConnectionString("tracker")));
       }
 
+      // automatically migrate db on startup
+      services
+        .BuildServiceProvider()
+        .GetService<TrackerContext>()
+        .Database
+        .Migrate();
+
       services.AddWebEncoders(); // bug in app insights requires this
       services.AddApplicationInsightsTelemetry();
 

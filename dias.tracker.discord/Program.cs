@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using dias.tracker.discord.Commands;
 using dias.tracker.discord.Events;
@@ -39,6 +40,7 @@ namespace dias.tracker.discord {
 
       commands.RegisterCommands<Basic>();
       commands.RegisterCommands<Poll>();
+      commands.RegisterCommands<Hamborg>();
 
       interactivity = discord.UseInteractivity(new InteractivityConfiguration());
 
