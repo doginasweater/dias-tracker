@@ -29,18 +29,6 @@ namespace dias.tracker.discord {
 
       dependencyModule.Initialize(config);
 
-      // QuickPulseTelemetryProcessor? processor = null;
-
-      // appInsightsConfig.TelemetryProcessorChainBuilder
-      //   .Use(next => {
-      //     processor = new QuickPulseTelemetryProcessor(next);
-      //     return processor;
-      //   })
-      //   .Build();
-
-      // var quickPulse = new QuickPulseTelemetryModule();
-      // quickPulse.Initialize(appInsightsConfig);
-      // quickPulse.RegisterTelemetryProcessor(processor);
 
       return dependencyModule;
     }
@@ -48,6 +36,19 @@ namespace dias.tracker.discord {
     public static async Task Main(string[] args) {
       var aiConfig = TelemetryConfiguration.CreateDefault();
       aiConfig.TelemetryInitializers.Add(new HttpDependenciesParsingTelemetryInitializer());
+
+      QuickPulseTelemetryProcessor? processor = null;
+
+      aiConfig.TelemetryProcessorChainBuilder
+        .Use(next => {
+          processor = new QuickPulseTelemetryProcessor(next);
+          return processor;
+        })
+        .Build();
+
+      var quickPulse = new QuickPulseTelemetryModule();
+      quickPulse.Initialize(aiConfig);
+      quickPulse.RegisterTelemetryProcessor(processor);
 
       appInsightsClient = new TelemetryClient(aiConfig);
 
