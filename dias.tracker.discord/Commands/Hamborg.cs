@@ -6,8 +6,9 @@ using DSharpPlus.CommandsNext.Attributes;
 
 namespace dias.tracker.discord.Commands {
   public class Hamborg {
-    private static Random _random = new Random();
-    private List<List<string>> pools = new List<List<string>> {
+    private static readonly Random _random = new Random();
+
+    private static readonly List<List<string>> pools = new List<List<string>> {
       new List<string> {
         "The hamburger is wet, the hamburger is in fact the social construct of wetness, which is to say that it is soaked simultaneously in every liquid imaginable, and yet none at all.",
         "The hamburger has never read the works of Joan Didion, but the hamburger has a great many opinions on social fragmentation.",
@@ -51,6 +52,21 @@ namespace dias.tracker.discord.Commands {
         "The hamburger is filled with birdsong. The hamburger is filled with the laughter of children. The hamburger has no place inside you; you must relinquish the hamburger, but you cannot.",
         "The hamburger speaks to you without making any sound. You have no ears. Who is speaking?",
         "Nobody has seen a hamburger in over four hundred years. You are certain that this is a hamburger, but you have no evidence of this.",
+      },
+      new List<string> {
+        "The hamburger is made entirely of divine angles. You hear the voices of every perished deity. They have nothing much to say.",
+        "This is the hamburger you ordered. This is the perfect hamburger. This hamburger is perfect such that it is imperfect. This hamburger is made from pocket lint and rare truffles.",
+        "From the basement you hear the scratching of rats. You do not have a basement. Where are the rats? They are everywhere.",
+        "You do not need to taste the hamburger to understand its flavour. Its flavour is mysterious. It tastes of colours you do not know the names for.",
+        "You have fulfilled the fourth and final part of the a prophecy laid down at your birth. The bells of creation toll for you. You are approaching the end, and at the end you may rest, but not yet.",
+        "It is screaming. It is screaming. It is screaming. It is screaming. It is screaming. It is screaming. It is screaming. It is screaming. It is screaming. It is screaming. It is screaming. It is screaming.",
+        "There are doves flocking to your shoulders. The doves are kind and gentle. The doves remove your eyes with beatific delicacy. The doves swarm into the vacant sockets. The doves are inside you now.",
+        "What would it mean to eat the hamburger? If you consume the hamburger, does it also consume you? Perhaps you will find out. Perhaps you will cease to exist and never find out anything at all.",
+        "You notice that you have not yet received the drink you ordered. It would be unthinkable to consume a hamburger without a drink. So you wait.",
+        "There is a buzzing in your ears. It itches your blood. It scratches at the door to your brain.",
+        "The clock ticks, slicing another second of your limited time. You are aware of the decay of your cells. How many of your cells have perished today? You chew the hamburger. You replace the cells.",
+        "Crowds of hamburgers surround you, chanting for you to consume their sacrifice. You are their god. The god of hamburgers.",
+        "This is the day of your wedding. Your spouse has no face, and no voice. The officiant is a monolith of black stone. Your vows escape your lips as an eternal drone. You worry about the catering.",
       },
     };
 
