@@ -22,7 +22,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "TS_NODE_PROJECT": "tsconfig.webpack.json"
       },
-      "applicationUrl": "http://localhost:51501/"
+      "applicationUrl": "http://localhost:5000/"
     },
     "Docker": {
       "commandName": "Docker",
