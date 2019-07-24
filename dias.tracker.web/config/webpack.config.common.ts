@@ -9,9 +9,9 @@ const config: webpack.Configuration = {
     extensions: [ ".tsx", ".ts", ".jsx", ".js" ],
   },
   output: {
-    path: path.resolve("./dist"),
+    path: path.resolve("./wwwroot/dist"),
     filename: "[name].js",
-    publicPath: "/",
+    publicPath: "/dist/",
   },
   module: {
     rules: [
@@ -50,7 +50,6 @@ const config: webpack.Configuration = {
       },
     ],
   },
-  plugins: [ ],
 };
 
 export default config;
