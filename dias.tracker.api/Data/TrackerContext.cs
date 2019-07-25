@@ -9,11 +9,12 @@ namespace dias.tracker.api.Data {
   public class TrackerContext : DbContext {
     public TrackerContext(DbContextOptions<TrackerContext> options) : base (options) { }
 
-    public DbSet<Hamborg>? HamborgText { get; set; }
-    public DbSet<Player>? Players { get; set; }
-    public DbSet<PlayerData>? PlayerData { get; set; }
-    public DbSet<Poll>? Polls { get; set; }
-    public DbSet<XivJob>? XivJobs { get; set; }
+    public DbSet<BotResponse> BotResponses { get; set; }
+    public DbSet<Hamborg> HamborgText { get; set; }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<PlayerData> PlayerData { get; set; }
+    public DbSet<Poll> Polls { get; set; }
+    public DbSet<XivJob> XivJobs { get; set; }
 
     public string user { get; set; } = "anonymous";
 

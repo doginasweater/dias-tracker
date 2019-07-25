@@ -15,3 +15,6 @@ csharp_new_line_before_finally = false
 csharp_new_line_before_members_in_object_initializers = false
 csharp_new_line_before_members_in_anonymous_types = false
 csharp_new_line_between_query_expression_clauses = false
+
+dotnet_naming_rule.all_symbols.applicable_kinds = *
+dotnet_naming_rule.all_symbols.severity = none

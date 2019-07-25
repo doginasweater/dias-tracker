@@ -20,7 +20,7 @@ namespace dias.tracker.api.Controllers {
 
     // GET api/values
     [HttpGet]
-    public async Task<IActionResult> Get() => Ok(await _ctx.HamborgText.GroupBy(x => x.pool).ToListAsync());
+    public async Task<IActionResult> Get() => Ok(await _ctx.HamborgText.ToListAsync());
 
     // GET api/values/5
     [HttpGet("{id}")]
