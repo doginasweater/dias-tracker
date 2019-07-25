@@ -332,3 +332,4 @@ ASALocalRun/
 .discordtoken
 
 **/dist/**
+*.db
