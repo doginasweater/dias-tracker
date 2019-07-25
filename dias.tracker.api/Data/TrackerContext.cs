@@ -3,11 +3,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using dias.tracker.api.Data.Tables;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace dias.tracker.api.Data {
-  public class TrackerContext : DbContext {
-    public TrackerContext(DbContextOptions<TrackerContext> options) : base (options) { }
+  public class TrackerContext : ApiAuthorizationDbContext<ApplicationUser> {
+    public TrackerContext(
+      DbContextOptions<TrackerContext> options,
+      IOptions<OperationalStoreOptions> operationalStoreOptions
+    ) : base (options, operationalStoreOptions) { }
 
     public DbSet<Hamborg>? HamborgText { get; set; }
     public DbSet<Player>? Players { get; set; }
