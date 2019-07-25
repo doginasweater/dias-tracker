@@ -9,15 +9,7 @@ using System.Net.Http;
 
 namespace dias.tracker.web.Controllers {
   public class HomeController : Controller {
-    private static readonly HttpClient _client = new HttpClient();
-    private static readonly string _remoteUrl = "https://dias-tracker-api.azurewebsites.net";
-    public async Task<IActionResult> Index() {
-      var data = await _client.GetStringAsync($"{_remoteUrl}/api/Values");
-
-      ViewData["response"] = data;
-
-      return View();
-    }
+    public IActionResult Index() => View();
 
     public IActionResult Privacy() {
       return View();

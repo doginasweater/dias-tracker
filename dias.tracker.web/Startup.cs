@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,6 +36,11 @@ namespace dias.tracker.web {
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
       if (env.IsDevelopment()) {
         app.UseDeveloperExceptionPage();
+        app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+          HotModuleReplacement = true,
+          ReactHotModuleReplacement = true,
+          ConfigFile = "config/webpack.config.dev.ts"
+        });
       } else {
         app.UseExceptionHandler("/Home/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -55,6 +61,7 @@ namespace dias.tracker.web {
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
         endpoints.MapRazorPages();
+        endpoints.MapFallbackToController("Index", "Home");
       });
     }
   }

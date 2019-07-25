@@ -330,3 +330,5 @@ ASALocalRun/
 .mfractor/
 
 .discordtoken
+
+**/dist/**

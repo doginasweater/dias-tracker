@@ -9,11 +9,11 @@ namespace dias.tracker.api.Data {
   public class TrackerContext : DbContext {
     public TrackerContext(DbContextOptions<TrackerContext> options) : base (options) { }
 
-    public DbSet<Hamborg> HamborgText { get; set; }
-    public DbSet<Player> Players { get; set; }
-    public DbSet<PlayerData> PlayerData { get; set; }
-    public DbSet<Poll> Polls { get; set; }
-    public DbSet<XivJob> XivJobs { get; set; }
+    public DbSet<Hamborg>? HamborgText { get; set; }
+    public DbSet<Player>? Players { get; set; }
+    public DbSet<PlayerData>? PlayerData { get; set; }
+    public DbSet<Poll>? Polls { get; set; }
+    public DbSet<XivJob>? XivJobs { get; set; }
 
     public string user { get; set; } = "anonymous";
 
@@ -35,7 +35,7 @@ namespace dias.tracker.api.Data {
       return base.SaveChanges();
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) {
       var changeSet = ChangeTracker.Entries<Common>();
 
       if (changeSet != null) {
