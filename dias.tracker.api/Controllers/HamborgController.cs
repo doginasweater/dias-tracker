@@ -7,10 +7,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dias.tracker.api.Controllers {
   [Route("api/[controller]")]
   [ApiController]
+  [Authorize]
   public class HamborgController : ControllerBase {
     private readonly TrackerContext _ctx;
 
@@ -20,7 +22,7 @@ namespace dias.tracker.api.Controllers {
 
     // GET api/values
     [HttpGet]
-    public async Task<IActionResult> Get() => Ok(await _ctx.HamborgText.GroupBy(x => x.pool).ToListAsync());
+    public async Task<IActionResult> Get() => Ok(await _ctx.HamborgText.ToListAsync());
 
     // GET api/values/5
     [HttpGet("{id}")]

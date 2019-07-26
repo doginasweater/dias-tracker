@@ -1,8 +1,11 @@
 using dias.tracker.api.Data;
 using dias.tracker.api.Data.Tables;
+using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,10 +45,11 @@ namespace dias.tracker.api {
         .AddApiAuthorization<ApplicationUser, TrackerContext>();
 
       services.AddAuthentication()
-        .AddIdentityServerJwt();
-        // .AddDiscord(options => {
-        //   options.
-        // });
+        .AddIdentityServerJwt()
+        .AddDiscord(options => {
+          options.ClientId = Configuration["Discord:ClientId"];
+          options.ClientSecret = Configuration["Discord:ClientSecret"];
+        });
 
       // automatically migrate db on startup
       services
@@ -54,9 +58,7 @@ namespace dias.tracker.api {
         .Database
         .Migrate();
 
-      services.AddCors();
-
-      services.AddControllers();
+      services.AddMvc(options => options.EnableEndpointRouting = false);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,15 +72,15 @@ namespace dias.tracker.api {
       }
 
       app.UseHttpsRedirection();
+      app.UseStaticFiles();
+      app.UseIdentityServer();
 
       app.UseRouting();
 
       app.UseAuthentication();
       app.UseAuthorization();
 
-      app.UseEndpoints(endpoints => {
-        endpoints.MapControllers();
-      });
+      app.UseMvcWithDefaultRoute();
     }
   }
 }
