@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,11 @@ namespace dias.tracker.api.Controllers {
   public class ValuesController : ControllerBase {
     // GET api/values
     [HttpGet]
-    public ActionResult<IEnumerable<string>> Get() => new string[] { "value1", "value2" };
+    public ActionResult<ClaimsPrincipal> Get() => User;
 
     // GET api/values/5
     [HttpGet("{id}")]
-    public ActionResult<string> Get(int id) => "value";
+    public ActionResult<string> Get(int id) => User.Identity.Name;
 
     // POST api/values
     [HttpPost]

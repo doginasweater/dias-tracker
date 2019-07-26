@@ -1,0 +1,17 @@
+{
+  "isRoot": true,
+  "tools": {
+    "dotnet-ef": {
+      "version": "3.0.0-preview7.19362.6",
+      "commands": [
+        "dotnet-ef"
+      ]
+    },
+    "dotnet-aspnet-codegenerator": {
+      "version": "3.0.0-preview6-19319-03",
+      "commands": [
+        "dotnet-aspnet-codegenerator"
+      ]
+    }
+  }
+}

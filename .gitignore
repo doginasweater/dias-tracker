@@ -332,3 +332,6 @@ ASALocalRun/
 .discordtoken
 
 **/dist/**
+*.db
+# let's make sure we don't accidentally check in security keys
+*.rsa
