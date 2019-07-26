@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using System;
 using System.Security.Claims;
 
@@ -69,7 +70,12 @@ namespace dias.tracker.api {
         .Database
         .Migrate();
 
-      services.AddMvc(options => options.EnableEndpointRouting = false);
+      services
+        .AddMvc(options => options.EnableEndpointRouting = false)
+        .AddNewtonsoftJson(opt => {
+          opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+          opt.SerializerSettings.Formatting = Formatting.Indented;
+        });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
