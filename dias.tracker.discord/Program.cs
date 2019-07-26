@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using dias.tracker.discord.Commands;
+using dias.tracker.discord.DTO;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
+using IdentityModel.Client;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
+using Newtonsoft.Json;
 
 namespace dias.tracker.discord {
   public class Program {
@@ -21,6 +25,9 @@ namespace dias.tracker.discord {
     private static InteractivityModule interactivity;
     private static TelemetryClient appInsightsClient;
     public static readonly string botname = "dias-tracker-bot";
+    private static HttpClient httpClient = new HttpClient(new HttpClientHandler {
+      ServerCertificateCustomValidationCallback = (a, b, c, d) => true
+    });
 
     public static DependencyTrackingTelemetryModule InitializeAppInsights(TelemetryConfiguration config) {
       var dependencyModule = new DependencyTrackingTelemetryModule();
@@ -29,8 +36,39 @@ namespace dias.tracker.discord {
 
       dependencyModule.Initialize(config);
 
-
       return dependencyModule;
+    }
+
+    public async static Task LoginToAPI() {
+      appInsightsClient.TrackTrace("Attempting to connect to dias-tracker api");
+
+      var secret = Environment.GetEnvironmentVariable("DIAS_TRACKER_SECRET");
+
+      var discovery = await httpClient.GetDiscoveryDocumentAsync("https://localhost:5001");
+
+      if (discovery.IsError) {
+        Console.WriteLine($"discovery error: {discovery.Error}");
+        appInsightsClient.TrackException(discovery.Exception);
+        return;
+      }
+
+      var authToken = await httpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest {
+        Address = discovery.TokenEndpoint,
+        ClientId = "dias.tracker.discord",
+        Scope = "dias.tracker.apiAPI",
+        ClientSecret = secret,
+      });
+
+      if (authToken.IsError) {
+        Console.WriteLine($"Auth error: {authToken.Error}");
+        Console.WriteLine($"Error description: {authToken.ErrorDescription}");
+        appInsightsClient.TrackException(authToken.Exception);
+        return;
+      }
+
+      httpClient.SetBearerToken(authToken.AccessToken);
+
+      appInsightsClient.TrackTrace("Connected to dias-tracker api");
     }
 
     public static async Task Main(string[] args) {
@@ -67,11 +105,10 @@ namespace dias.tracker.discord {
           UseInternalLogHandler = true,
           LogLevel = LogLevel.Debug,
           AutoReconnect = true,
-
         });
 
         commands = discord.UseCommandsNext(new CommandsNextConfiguration {
-          StringPrefix = "!!",
+          StringPrefix = "$ ",
           EnableDefaultHelp = true,
           EnableDms = true,
           EnableMentionPrefix = true,
@@ -88,15 +125,41 @@ namespace dias.tracker.discord {
         discord.Ready += SetGame;
         discord.GuildAvailable += GuildAvailable;
         discord.ClientErrored += ClientError;
+        discord.MessageCreated += SlackbotResponse;
 
         commands.CommandExecuted += CommandExecuted;
         commands.CommandErrored += CommandErrored;
 
         await discord.ConnectAsync();
 
-        appInsightsClient.TrackTrace("Connected");
+        appInsightsClient.TrackTrace("Connected to Discord");
+
+        // await LoginToAPI();
 
         await Task.Delay(-1);
+      }
+    }
+
+    private static async Task SlackbotResponse(MessageCreateEventArgs e) {
+      // if (e.Message.Content != "hamburger test") {
+      //   return;
+      // }
+
+      // using var msgResponse = await httpClient.GetAsync("https://localhost:5001/api/Hamborg");
+
+      // if (!msgResponse.IsSuccessStatusCode) {
+      //   appInsightsClient.TrackTrace($"API Error {msgResponse.StatusCode} {msgResponse.ReasonPhrase}");
+      //   return;
+      // }
+
+      // var msgString = await msgResponse.Content.ReadAsStringAsync();
+
+      // var messages = JsonConvert.DeserializeObject<List<HamborgDto>>(msgString);
+
+      // await e.Message.RespondAsync(messages[0].text);
+
+      if (e.Message.Content.ToLower() == "i am your dad" || e.Message.Content.ToLower() == "i'm your dad") {
+        await e.Message.RespondAsync("i'm your dad! (boogie woogie woogie)");
       }
     }
 

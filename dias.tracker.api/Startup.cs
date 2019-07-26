@@ -1,16 +1,15 @@
 using dias.tracker.api.Data;
 using dias.tracker.api.Data.Tables;
-using IdentityServer4.Stores;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Security.Claims;
 
 namespace dias.tracker.api {
   public class Startup {
@@ -43,8 +42,12 @@ namespace dias.tracker.api {
 
       services.AddIdentityServer()
         .AddApiAuthorization<ApplicationUser, TrackerContext>(options => {
-          options.Clients.AddNativeApp("dias.tracker.discord", discordBot => {
-            discordBot.WithScopes("hamborg");
+          options.Clients.Add(new Client {
+            ClientId = "dias.tracker.discord",
+            ClientName = "Tiro Finale Tracker",
+            ClientSecrets = { new Secret(Configuration["DiasTrackerDiscord:ClientSecret"].Sha256()) },
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+            AllowedScopes = { "dias.tracker.apiAPI" }
           });
         });
 
@@ -53,6 +56,10 @@ namespace dias.tracker.api {
         .AddDiscord(options => {
           options.ClientId = Configuration["Discord:ClientId"];
           options.ClientSecret = Configuration["Discord:ClientSecret"];
+          options.Scope.Add("email");
+          options.Scope.Add("guilds");
+          options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+          options.SaveTokens = true;
         });
 
       // automatically migrate db on startup
