@@ -42,7 +42,11 @@ namespace dias.tracker.api {
         .AddEntityFrameworkStores<TrackerContext>();
 
       services.AddIdentityServer()
-        .AddApiAuthorization<ApplicationUser, TrackerContext>();
+        .AddApiAuthorization<ApplicationUser, TrackerContext>(options => {
+          options.Clients.AddNativeApp("dias.tracker.discord", discordBot => {
+            discordBot.WithScopes("hamborg");
+          });
+        });
 
       services.AddAuthentication()
         .AddIdentityServerJwt()
