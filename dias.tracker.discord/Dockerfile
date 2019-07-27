@@ -15,4 +15,7 @@ RUN dotnet publish -c Release -o out
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/out .
+RUN apt update
+RUN apt install -y libopus0 libsodium23 libopus-dev libsodium-dev ffmpeg
+COPY ./aki.mp3 .
 ENTRYPOINT ["dotnet", "dias.tracker.discord.dll"]

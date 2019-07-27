@@ -11,6 +11,7 @@ using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
+using DSharpPlus.VoiceNext;
 using IdentityModel.Client;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
@@ -23,6 +24,7 @@ namespace dias.tracker.discord {
     private static CommandsNextModule commands;
     private static DiscordClient discord;
     private static InteractivityModule interactivity;
+    private static VoiceNextClient voice;
     private static TelemetryClient appInsightsClient;
     public static readonly string botname = "dias-tracker-bot";
     private static HttpClient httpClient = new HttpClient(new HttpClientHandler {
@@ -117,8 +119,11 @@ namespace dias.tracker.discord {
         commands.RegisterCommands<Basic>();
         commands.RegisterCommands<Poll>();
         commands.RegisterCommands<Hamborg>();
+        commands.RegisterCommands<Voice>();
 
         interactivity = discord.UseInteractivity(new InteractivityConfiguration());
+
+        voice = discord.UseVoiceNext();
 
         // events
         discord.Ready += ClientReady;
