@@ -14,12 +14,14 @@ namespace dias.tracker.discord.Commands {
       var vnc = vnext.GetConnection(ctx.Guild);
 
       if (vnc != null) {
+        await ctx.RespondAsync("Already connected in this guild");
         throw new InvalidOperationException("Already connected in this guild");
       }
 
       var channel = ctx.Member?.VoiceState?.Channel;
 
       if (channel is null) {
+        await ctx.RespondAsync("You need to be in a voice channel");
         throw new InvalidOperationException("You need to be in a voice channel");
       }
 
@@ -33,6 +35,7 @@ namespace dias.tracker.discord.Commands {
 
       var vnc = vnext.GetConnection(ctx.Guild);
       if (vnc is null) {
+        await ctx.RespondAsync("I am already disconnected, my dude.");
         throw new InvalidOperationException("Not connected in this guild.");
       }
 
@@ -49,6 +52,7 @@ namespace dias.tracker.discord.Commands {
       var vnc = vnext.GetConnection(ctx.Guild);
 
       if (vnc is null) {
+        await ctx.RespondAsync("I screeched into the void but nothing responded. Please connect me to a voice channel.");
         throw new InvalidOperationException("Not connected in this guild.");
       }
 
