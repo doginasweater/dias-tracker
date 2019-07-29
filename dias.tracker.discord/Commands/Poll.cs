@@ -14,6 +14,8 @@ namespace dias.tracker.discord.Commands {
       [Description("How long should the poll last?")] TimeSpan duration,
       [Description("What options should people have?")] params DiscordEmoji[] options
     ) {
+      await ctx.RespondAsync($"duration days: {duration.Days} hours: {duration.Hours} minutes: {duration.Minutes} seconds: {duration.Seconds}");
+
       var interactivity = ctx.Client.GetInteractivityModule();
 
       var poll_options = options.Select(xe => xe.ToString());

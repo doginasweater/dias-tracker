@@ -1,6 +1,6 @@
 using dias.tracker.api.Data;
 using dias.tracker.api.Data.Tables;
-using dias.tracker.api.Models;
+using dias.tracker.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace dias.tracker.api.Controllers {
     public async Task Post([FromBody] HamborgDto dto) {
       var (pool, text) = dto;
 
-      _ctx.HamborgText.Add(new Hamborg {
+      _ctx.HamborgText?.Add(new Hamborg {
         pool = pool,
         text = text
       });

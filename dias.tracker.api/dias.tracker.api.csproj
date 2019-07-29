@@ -27,4 +27,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0-preview7.19365.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\dias.tracker.dto\dias.tracker.dto.csproj" />
+  </ItemGroup>
+
 </Project>
